@@ -3,3 +3,6 @@ pandas
 matplotlib
 rasterio
 xarray
+GeoPandas
+scikit-learn
+pystac-client
