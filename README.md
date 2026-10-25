@@ -2,7 +2,7 @@
 
 A reproducible Python workflow that classifies land cover and estimates sub-pixel vegetation cover from **EnMAP hyperspectral** imagery, **Sentinel-2** multispectral imagery, and a **feature-level fusion** of both. The three are compared under **spatial cross-validation**.
 
-**Author:** Pallavi · **Status:** learning project / method demonstrator · **Runs in:** Google Colab or Jupyter (≈ 10 min)
+**Author:** Pallavi Prasad· **Status:** learning project / method demonstrator · **Runs in:** Google Colab or Jupyter (≈ 10 min)
 
 ---
 
