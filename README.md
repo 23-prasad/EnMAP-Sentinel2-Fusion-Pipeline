@@ -2,9 +2,7 @@
 
 **Urban land-cover classification and vegetation-fraction estimation | Potsdam, Germany**
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/YOUR-USERNAME/YOUR-REPOSITORY/blob/main/EnMAP_S2_fusion_pipeline.ipynb)
-
-> **Before publishing:** replace `YOUR-USERNAME` and `YOUR-REPOSITORY` in the badge URL with your exact GitHub account and repository name. The linked notebook must be named `EnMAP_S2_fusion_pipeline.ipynb` at the repository root. See **Open in Colab** below.
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/23-prasad/EnMAP-Sentinel2-Fusion-Pipeline/blob/main/EnMAP_S2_fusion_pipeline_v1.ipynb)
 
 ## Overview
 
@@ -92,4 +90,21 @@ EnMAP / DLR; EnMAP-Box contributors; Copernicus Sentinel programme; Element84 Ea
 
 ## Licence
 
-**Code licence not yet selected.** Before publishing, choose a suitable licence for *your code* separately from the licences / attribution conditions for the input datasets. Do not assume that open access to data grants unrestricted redistribution.
+## License and Data Attribution
+
+The original Python code in this repository is released under the [MIT License](LICENSE).
+
+The Earth Observation datasets used in this project are subject to their respective providers' licences and attribution requirements and are not relicensed under MIT.
+
+## Data licences
+The MIT licence applies to the code only. Data used or derived in this repository keep their original terms:
+- EnMAP example data © DLR, distributed with the EnMAP-Box (https://www.enmap.org/)
+- Land-cover reference derived from aerial imagery: GeoBasis-DE/LGB, dl-de/by-2-0
+- Contains modified Copernicus Sentinel data (2022)
+
+Third-party software, datasets and other externally sourced material retain their respective licences.
+
+## Development note
+The pipeline was developed with the help of an AI assistant (Claude, Anthropic). I ran, tested and adapted the workflow, checked the results, and am responsible for the interpretation.
+
+This repository is intended for educational, research and methodological demonstration purposes.
