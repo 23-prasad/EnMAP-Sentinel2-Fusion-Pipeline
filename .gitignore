@@ -1,0 +1,35 @@
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Temporary files
+*.tmp
+*.log
+
+# Credentials (precaution)
+.env
+*.pem
+credentials.json
+
+# Large satellite imagery
+*.tif
+*.tiff
+*.SAFE/
+*.zip
+
+# Raw data directories
+data/raw/
+data/downloads/
+
+# Local models and intermediates
+*.h5
+*.hdf5
+*.nc

@@ -1,0 +1,8 @@
+{
+  "low vegetation": 1,
+  "pavement": 2,
+  "roof": 3,
+  "soil": 4,
+  "tree": 5,
+  "water": 6
+}

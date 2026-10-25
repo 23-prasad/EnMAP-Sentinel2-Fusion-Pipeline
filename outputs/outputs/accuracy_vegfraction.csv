@@ -1,0 +1,5 @@
+features,R2,RMSE
+S2 (bands+indices),0.875,0.126
+EnMAP PCA,0.786,0.165
+EnMAP all bands,0.799,0.16
+Fused EnMAP+S2,0.88,0.124

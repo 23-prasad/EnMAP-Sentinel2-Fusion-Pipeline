@@ -1,0 +1,5 @@
+features,n_features,OA,kappa,macro_F1
+S2 (bands+indices),14,0.913,0.867,0.63
+EnMAP PCA,10,0.867,0.793,0.57
+EnMAP all bands,210,0.876,0.809,0.595
+Fused EnMAP+S2,30,0.916,0.871,0.616
