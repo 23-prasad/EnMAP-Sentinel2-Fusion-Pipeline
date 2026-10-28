@@ -55,6 +55,35 @@ The example data is requested programmatically, without credentials. **Check the
 5. Inspect classification and regression outputs. Download `outputs.zip` from the export section or persist results to Drive. A typical Colab run may take several minutes; runtime varies by instance and network.
 
 **Local execution:** Jupyter with a compatible Python environment and the packages listed in `requirements.txt`. Because package versions and services change, rerun dependency checks before relying on exact reproducibility.
+## Issues encountered and solutions
+
+### Setting up EnMAP-Box in QGIS (Windows)
+
+| Problem | Cause | Solution |
+|---|---|---|
+| `Permission denied … arrow.dll is in use` while installing EnMAP-Box dependencies with the OSGeo4W installer, even with QGIS closed and no process holding the file | QGIS 3.40.5 was installed with the **standalone .msi** into `C:\Program Files\QGIS 3.40.5`. That folder is write-protected, and the OSGeo4W package installer is meant for OSGeo4W network installs (`C:\OSGeo4W`), not standalone ones. The `OSGeo4W.bat` in the QGIS folder only opens a configured shell; it is not an installer. | Don't run `osgeo4w-setup.exe` against a standalone QGIS. Install the Python dependencies with pip from the **OSGeo4W Shell** instead: `python -m pip install --upgrade --user -r https://raw.githubusercontent.com/EnMAP-Box/enmap-box/main/.env/osgeo4w/requirements_osgeo4w.txt` |
+| `error: ssl-missing` from pip, then `ImportError: DLL load failed while importing _ssl: The specified procedure could not be found` | The aborted OSGeo4W run had replaced some libraries but not others, leaving mismatched OpenSSL DLLs in the QGIS folder. | Uninstall QGIS, **delete the leftover `C:\Program Files\QGIS 3.40.5` folder** (the uninstaller only removes files it installed itself), reinstall, check with `python -c "import ssl; print(ssl.OPENSSL_VERSION)"`, then repeat the pip command. |
+| pip warnings that scripts such as `f2py.exe` are "not on PATH" | `--user` installs go to `%APPDATA%\Python\Python312`. | Harmless: EnMAP-Box doesn't need those command-line tools. |
+
+### Working with the EnMAP-Box example data
+
+| Problem | Cause | Solution |
+|---|---|---|
+| `enmap_potsdam_srf.geojson` can't be added to the QGIS map | The file holds spectral response functions with `"geometry": null`: there is nothing to draw on a map. | Open it in EnMAP-Box (*Project → Load Example Data*, or add it in the Data Sources panel) and view it in a **Spectral Library** window. |
+| The library shows a dense "comb" of curves instead of the vegetation/water spectra in the tutorial figure | The SRF file contains 224 narrow band-sensitivity curves, not reflectance spectra. The tutorial's `speclib_potsdam` belongs to an older version of the example data. | Build a reflectance library instead: collect profiles from `enmap_potsdam` with the profile tool, or import profiles from `enmap_potsdam` + `landcover_potsdam_point`. |
+| Label field `level_3_id` not found | In the current example data, classes are text fields (`level_1`, `level_2`, `level_3`). | The notebook maps class names to integer codes itself (section 4). |
+
+### Developing and running the notebook
+
+| Problem | Cause | Solution |
+|---|---|---|
+| `ValueError: array must not contain infs or NaNs` in Savitzky–Golay smoothing | No-data pixels are NaN and `savgol_filter` requires finite values. | Fill NaNs before filtering, then restore them afterwards (section 3). |
+| Smoothing across the VNIR/SWIR detector overlap and the water-vapour gaps | EnMAP's wavelength list isn't monotonic (the SWIR detector starts at 902 nm, before the VNIR detector ends at 993 nm). | Split bands into contiguous segments, breaking at gaps and where the wavelength drops, and smooth each segment separately. |
+| Sentinel-2 STAC search failed in a network-restricted environment | Outbound access to the Earth Search endpoint was blocked. | The notebook falls back to Sentinel-2 bands **simulated** from EnMAP and prints a warning; fusion results are then only a code test. On Colab the real scene loads (this run: `S2A_33UUU_20220720_0_L2A`). |
+| 99 % of variance captured by only 3 PCs, too few as ML features | Brightness dominates the variance; class-relevant detail sits in smaller components. | Keep components up to 99.9 % variance, with a minimum of 10. |
+| Very few pure pixels for roof and soil | Small urban objects rarely fill a 30 m pixel. | Purity threshold lowered from 80 % to 70 % (more samples); the vegetation-fraction regression added as a better fit for mixed pixels. |
+| Section 11 (regression CV) took more than 6 minutes on Colab | `RandomForestRegressor` defaults to `max_features=1.0`, so every split tests all 210 bands; it trains 17 forests on Colab's 2 CPU cores. | `max_features=0.3` (≈ 1–2 min, similar accuracy). |
+| `bash: syntax error near unexpected token` when downloading outputs in Colab | A line starting with `!` is run entirely by the shell, including the Python part after `&&`. | Put the `!zip …` shell command and the Python `files.download(…)` call on separate lines, or copy `outputs/` to Google Drive. |
 
 ## Repository structure
 
@@ -65,8 +94,6 @@ requirements.txt                 # dependency list
 .gitignore                       # excluded large inputs and transient files
 outputs/outputs/                 # optional small example CSV/JSON/model artifacts
 ```
-
-Large generated GeoTIFF imagery is generally **not committed**; rerun the notebook to generate full-resolution maps. If your local repository uses a different folder arrangement, update this section to match.
 
 ## Limitations
 
